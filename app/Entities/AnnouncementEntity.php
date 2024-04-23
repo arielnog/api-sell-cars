@@ -16,6 +16,7 @@ class AnnouncementEntity extends BaseEntity
         string                     $uuid,
         private string             $title,
         private string             $description,
+        private string             $imagePath,
         private StatusAnnouncement $status,
         private ?string            $city,
         private float              $price,
@@ -73,7 +74,7 @@ class AnnouncementEntity extends BaseEntity
     {
         return $this->simulation;
     }
-    
+
     public function getPrice(): float
     {
         return $this->price;
@@ -85,13 +86,13 @@ class AnnouncementEntity extends BaseEntity
             'uuid' => $this->getUuid(),
             'title' => $this->title,
             'description' => $this->description,
+            'image_path' => $this->imagePath,
             'status' => $this->status->toString(),
             'city' => $this->city,
             'price' => $this->price,
             'phone_number' => $this->phoneNumber,
             'vehicle' => $this->getVehicle()?->toArray(),
             'simulation' => $this->simulation
-
         ];
     }
 }

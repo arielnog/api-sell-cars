@@ -19,7 +19,7 @@ return new class extends Migration
             $table->uuid()->default(Uuid::uuid4()->toString())->unique();
             $table->string('title')->nullable(false);
             $table->text('description')->nullable(false);
-            $table->text('image_path')->nullable();
+            $table->text('image_path')->nullable(false);
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->string('city')->nullable(false);
             $table->decimal('price',10,2)->nullable(false);

@@ -40,7 +40,7 @@ class AnnouncementServiceTest extends TestCase
     {
         $mock = self::getMock();
         $announcementEntity = AnnouncementFactory::fromArray($mock['announcement']);
-        $vehicleEntity = VehicleFactory::fromArray($mock['vehicle']);
+        $vehicleEntity = VehicleFactory::fromArray($mock['announcement']['vehicle']);
 
         $this->announcementRepository
             ->shouldReceive('create')
@@ -64,7 +64,7 @@ class AnnouncementServiceTest extends TestCase
 
         $mock = self::getMock();
         $announcementEntity = AnnouncementFactory::fromArray($mock['announcement']);
-        $vehicleEntity = VehicleFactory::fromArray($mock['vehicle']);
+        $vehicleEntity = VehicleFactory::fromArray($mock['announcement']['vehicle']);
 
         $this->announcementRepository
             ->shouldReceive('create')
@@ -79,7 +79,7 @@ class AnnouncementServiceTest extends TestCase
 
         $announcementEntity = AnnouncementFactory::fromArray($mockData['announcement']);
         $announcementEntity->setVehicle(
-            VehicleFactory::fromArray($mockData['vehicle'])
+            VehicleFactory::fromArray($mockData['announcement']['vehicle'])
         );
         $announcementUuid = $announcementEntity->getUuid();
 
@@ -104,41 +104,40 @@ class AnnouncementServiceTest extends TestCase
     public function testGetListWithSuccess()
     {
         $mockData = self::getMock();
-        $announcementCollection = AnnouncementCollection::fromArray([$mockData]);
+        $announcementCollection = AnnouncementCollection::fromArray($mockData);
 
-        $this->vehicleRepository
-            ->shouldReceive('getList')
+        $this->announcementRepository
+            ->shouldReceive('getListByParam')
             ->andReturn($announcementCollection);
 
         $result = $this->classUnderTest->getList();
 
-        self::assertInstanceOf($result,JsonResponse::class);
+        self::assertInstanceOf(AnnouncementCollection::class,$result);
     }
 
     public static function getMock(): array
     {
         return [
             "announcement" => [
-                "id" => 1,
                 "uuid" => Uuid::uuid4()->toString(),
                 "title" => "Céu ta Preto",
+                "image_path" => "https://carros-limeira.temusados.com.br/img/Veiculos/1664142/chevrolet-celta-preto-2012-20220407161620618.jpg",
                 "description" => "Celtinha naquele modelo, no precinho, conservado",
                 "city" => "Salvador",
                 "price" => 14000.50,
                 "status" => "active",
-                "phone_number" => "(71) 99784-5123"
+                "phone_number" => "(71) 99784-5123",
+                "vehicle" => [
+                    "uuid" => Uuid::uuid4()->toString(),
+                    "year" => 2011,
+                    "brand" => "Chevrolet",
+                    "model" => "Celta",
+                    "license_plate" => "JJJ4444",
+                    "status" => "new",
+                    "transmission" => "manual",
+                    "mileage" => 147147,
+                ]
             ],
-            "vehicle" => [
-                "id" => 1,
-                "uuid" => Uuid::uuid4()->toString(),
-                "year" => 2011,
-                "brand" => "Chevrolet",
-                "model" => "Celta",
-                "license_plate" => "JJJ4444",
-                "status" => "new",
-                "transmission" => "manual",
-                "mileage" => 147147,
-            ]
         ];
     }
 

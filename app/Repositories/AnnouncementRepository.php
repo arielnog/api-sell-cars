@@ -26,6 +26,7 @@ class AnnouncementRepository implements IAnnouncementRepository
                 [
                     'uuid',
                     'title',
+                    'image_path',
                     'description',
                     'status',
                     'city',

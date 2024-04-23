@@ -37,6 +37,7 @@ class GlobalSeeder extends Seeder
                 "announcement" => [
                     "uuid" => Uuid::uuid4()->toString(),
                     "title" => "Céu ta Preto",
+                    "image_path" => "https://carros-limeira.temusados.com.br/img/Veiculos/1664142/chevrolet-celta-preto-2012-20220407161620618.jpg",
                     "description" => "Celtinha naquele modelo, no precinho, conservado",
                     "city" => "Salvador",
                     "price" => 14000.50,

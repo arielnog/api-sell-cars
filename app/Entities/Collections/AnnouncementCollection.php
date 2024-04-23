@@ -25,8 +25,8 @@ class AnnouncementCollection extends Collection
     {
         $announcementEntities = [];
 
-        foreach ($data as $quotation) {
-            $announcementEntities[] = AnnouncementFactory::fromArray($quotation);
+        foreach ($data as $announcementEntity) {
+            $announcementEntities[] = AnnouncementFactory::fromArray($announcementEntity);
         }
 
         return new self(...$announcementEntities);
