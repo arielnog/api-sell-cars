@@ -1,17 +1,3 @@
-<div align='right'>
-    <a href="./README.md">Inglês |</a>
-    <a href="./PORTUGUESE.md">Português</a>
-</div>
-
-<div align='center'>
-    <h1>Template</h1>
-     <img src="https://img.shields.io/badge/version-v0.1-blue"/>
-    <img src="https://img.shields.io/github/contributors/akioleo/MoneyTransaction_v2"/>
-    <img src="https://img.shields.io/github/stars/akioleo/MoneyTransaction_v2?style=sociale"/>
-    <img src="https://img.shields.io/github/forks/akioleo/MoneyTransaction_v2?style=social"/>
-</div>
-
-
 ## Compatibilidade
 
 - PHP >= 8.1
@@ -34,19 +20,11 @@ php -r "copy('.env.example', '.env');"
 ```
 Criar uma network (caso não esteja criada)
 ```bash
-docker network create kong-net
+docker network create global-default
 ```
 Faça o build dos containeres no `docker-compose` no diretório raiz:
 ```bash
 docker-compose up -d --build
-```
-
-## Iniciando o projeto
-
-Usuário para teste com autenticação JWT
-```bash
-| email   =>   teste@teste.com   |
-| senha   =>   password          |
 ```
 
 ## Executando testes automatizados
@@ -59,14 +37,6 @@ Rode o script para execução dos testes automatizados
 ```bash
 php artisan test
 ```
-Execute o comando para gerar um diretório `coverage-report` e um relatório em `HTML` com a cobertura de testes 
-```bash
-php artisan test --coverage-html=coverage-report
-```
-Abrir o relatório no seu navegador ou com o comando
-```bash
-open coverage-report/index.html
-```
 
 ## Serviços e Portas
 
@@ -75,30 +45,11 @@ open coverage-report/index.html
 | customer_manager_app        | `9501`    | `9501`                    |
 | customer_manager_nginx      | `8080`    | `80`                      |
 | customer_manager_postgres   | `5432`    | `5432`                    |
-| customer_manager_mongodb    | `27017`   | `27017`                   |
 | customer_manager_redis      | `6379`    | `6379`                    |
-| customer_manager_metabase   | `3000`    | `3000`                    |
 
 ## Health
 
 Endpoint que validam a saúde da aplicação e dos serviços:
 
 - `http://localhost:8080/health`
-- `http://localhost:8080/liveness`
 
-## Documentação 
-
-Endpoint da aplicação: `http://localhost:8080/documentation`
-
-A documentação da API deve ser realizada no formato YAML e são armazenados no diretório `storage/api-docs` pelo nome `api-docs-v1.yml`
-
-## Monitoramento
-
-Endpoint de monitoramento de Queues e Jobs: `http://localhost:8080/horizon/dashboard`
-
-<!-- FOTO DO SWAGGER DA APLICACAO -->
-<!-- ![Swagger Image](/storage/external/swagger.png) -->
-
-**Referências:**
-
-- [Especificação OpenAPI - Swagger](https://swagger.io/specification/)
