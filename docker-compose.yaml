@@ -1,0 +1,98 @@
+version: '3.8'
+
+services:
+  application:
+    container_name: template_app
+    build: ./
+    entrypoint: ./.docker/entrypoint.sh
+    environment:
+      - DB_HOST=template_postgres
+      - DB_DATABASE=localstack
+      - DB_USERNAME=admin
+      - DB_PASSWORD=secret
+    ports:
+      - 9501:9501
+    volumes:
+      - ./:/var/www
+
+      # nginx pools configuration
+      - ./.docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./.docker/nginx/microservices.conf:/etc/nginx/conf.d/microservices.conf
+
+      # php-fpm socket
+      - "phpsocket:/var/run"
+    networks:
+      - global-default
+    depends_on:
+      - postgres
+      - redis
+
+  nginx:
+    container_name: template_nginx
+    image: nginx:1.25.2-alpine
+    volumes:
+      - ./:/var/www
+
+      # nginx pools configuration
+      - ./.docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+      - ./.docker/nginx/microservices.conf:/etc/nginx/conf.d/microservices.conf
+
+      # php-fpm .conf's
+      - ./.docker/php-fpm/www.conf:/usr/local/etc/php-fpm.d/www.conf
+      - ./.docker/php-fpm/zz-docker.conf:/usr/local/etc/php-fpm.d/zz-docker.conf
+
+      # php-fpm socket
+      - "phpsocket:/var/run"
+    ports:
+      - "8080:80" # http
+      # - "443:443" # https
+    networks:
+      - global-default
+    depends_on:
+      - application
+
+  postgres:
+    container_name: template_postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: localstack
+    ports:
+      - 5432:5432
+    volumes:
+      - ./.docker/postgres:/var/lib/postgresql/data
+    networks:
+      - global-default
+
+  redis:
+    container_name: template_redis
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - global-default
+
+#  metabase:
+#    container_name: template_metabase
+#    build:
+#      context: ./.docker/metabase
+#      dockerfile: Dockerfile
+#    ports:
+#      - "3000:3000"
+#    environment:
+#      - MB_DB_FILE=/metabase/metabase.db
+#    volumes:
+#      - ./.docker/metabase/metabase-data:/metabase
+#    networks:
+#      - global-default
+#    depends_on:
+#      - postgres
+
+volumes:
+  postgres:
+  phpsocket:
+
+networks:
+  global-default:
+    external: true
